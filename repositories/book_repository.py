@@ -16,3 +16,8 @@ class BookRepository:
     with DBConnection() as db:
       book = db.session.query(Book).filter(Book.id == id).first()
       return book
+    
+  def delete(self, id):
+    with DBConnection() as db:
+      db.session.query(Book).filter(Book.id == id).delete()
+      db.session.commit()
