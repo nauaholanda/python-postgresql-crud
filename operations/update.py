@@ -1,35 +1,32 @@
-import psycopg2
+from repositories import BookRepository
+from entities import Book
 from operations.fetch import fetch_books
 
 def update_book():
   fetch_books()
 
   try:
-    id = int(input('\nDigite o id do livro que deseja editar: '))
+    id = int(input('\nEnter the ID of the book you want to edit: '))
 
-    conn = psycopg2.connect("dbname=library user=postgres password=password")
-    cursor = conn.cursor()
-    cursor.execute(f'SELECT id, title, author, review_points FROM livros WHERE id = {id}')
+    book_repository = BookRepository()
 
-    book = cursor.fetchone()
+    book = book_repository.find_by_id(id)
 
-    nome = input(f"Digite um novo nome para esse livro ({book[1]}): ")
-    if not nome: nome = book[1]
+    title = input(f"Enter a new title for this book ({book.title}): ")
+    if not title: title = book.title
 
-    autor = input(f"Digite um novo nome de autor para esse livro ({book[2]}): ")
-    if not autor: autor = book[2]
+    author = input(f"Enter a new author for this book ({book.author}): ")
+    if not author: author = book.author
 
-    avaliacao_input = input(f"Digite uma nova nota para esse livro ({book[3]}): ")
-    if not avaliacao_input: avaliacao = book[3]
-    else: avaliacao = float(avaliacao_input)
+    rating_input = input(f"Enter a new rating for this book ({book.rating}): ")
+    if not rating_input: rating = book.rating
+    else: rating = float(rating_input)
 
-    cursor.execute(f"UPDATE books SET title='{nome}', author='{autor}', review_points='{avaliacao}' WHERE id = {id};")
-    conn.commit()
+    updated_book = Book(id=id, title=title, author=author, rating=rating)
 
-    print('Livro editado com sucesso!')
+    book_repository.update(updated_book)
 
-    cursor.close()
-    conn.close()
+    print('Book updated successfully!')
 
   except Exception as err:
-    print(f'Erro ao editar livro: {err}. Voltando ao Menu...')
+    print(f'Error updating book: {err}. Returning to Menu...')
