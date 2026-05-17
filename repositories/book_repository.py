@@ -24,5 +24,9 @@ class BookRepository:
 
   def update(self, book: Book):
     with DBConnection() as db:
-      db.session.query(Book).filter(Book.id == book.id).update(vars(book))
+      db.session.query(Book).filter(Book.id == book.id).update({
+        'title': book.title,
+        'author': book.author,
+        'rating': book.rating
+      })
       db.session.commit()
