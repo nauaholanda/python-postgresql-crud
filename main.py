@@ -1,16 +1,16 @@
 from operations import fetch_books, insert_book, update_book, delete_book
 
 def main():
-    print("Bem-vindo ao cadastro de livros!")
+    print("Welcome to the book registry!")
     while(True):
-        print("Ações disponíveis: ")
-        print("1 - Listar livros cadastrados")
-        print("2 - Cadastrar novo livro")
-        print("3 - Editar livro existente")
-        print("4 - Excluir livro")
-        print("(digite 999 ou pressione Ctrl+C para sair)")
+        print("Available actions: ")
+        print("1 - List registered books")
+        print("2 - Register a new book")
+        print("3 - Edit an existing book")
+        print("4 - Delete a book")
+        print("(type 999 or press Ctrl+C to exit)")
         try:
-            action_number = int(input("O que deseja fazer? (insira o número da ação): "))
+            action_number = int(input("What would you like to do? (enter the action number): "))
 
             if (action_number == 999):
                 break
@@ -27,17 +27,17 @@ def main():
                 case 4:
                     delete_book()
                 case _:
-                    print("Ação desconhecida")
+                    print("Unknown action")
         
 
             print('\n\n\n')
             print('=========================================')
 
         except ValueError:
-            print ("Informe apenas o número de uma ação.")
+            print("Please enter a valid action number.")
         except KeyboardInterrupt:
             break
-    print("Até mais!")
+    print("Goodbye!")
 
 
 if __name__ == "__main__":
