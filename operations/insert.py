@@ -1,23 +1,19 @@
-import psycopg2
+from repositories import BookRepository
+from entities import Book
 
 def insert_book():
   try:
-    nome = input("Digite o nome do novo livro: ")
-    autor = input("Digite o nome do autor desse livro: ")
-    avaliacao = float(input("Digite a nota desse livro: "))
+    title = input("Enter the title of the new book: ")
+    author = input("Enter the author of this book: ")
+    rating = float(input("Enter the rating for this book: "))
 
-    conn = psycopg2.connect("dbname=library user=postgres password=password")
-    cursor = conn.cursor()
+    book_repository = BookRepository()
 
-    sql = f"INSERT INTO books(title, author, review_points) values('{nome}', '{autor}', {avaliacao});"
+    book_to_insert = Book(title=title, author=author, rating=rating)
 
-    cursor.execute(sql)
-    conn.commit()
+    book_repository.insert(book_to_insert)
 
-    print(f"Livro {nome} salvo com sucesso!")
-
-    cursor.close()
-    conn.close()
+    print(f"Book '{title}' saved successfully!")
 
   except Exception as err:
-    print(f'Erro ao inserir livro: {err}. Voltando ao Menu...')
+    print(f'Error inserting book: {err}. Returning to Menu...')
