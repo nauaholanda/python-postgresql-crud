@@ -1,7 +1,4 @@
-from operations.fetch import fetch_books
-from operations.insert import insert_book
-from operations.update import update_book
-from operations.delete import delete_book
+from operations import fetch_books, insert_book, update_book, delete_book
 
 def main():
     print("Bem-vindo ao cadastro de livros!")
