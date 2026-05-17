@@ -6,10 +6,10 @@ def insert_book():
     autor = input("Digite o nome do autor desse livro: ")
     avaliacao = float(input("Digite a nota desse livro: "))
 
-    conn = psycopg2.connect("dbname=teste_python user=postgres password=password")
+    conn = psycopg2.connect("dbname=library user=postgres password=password")
     cursor = conn.cursor()
 
-    sql = f"INSERT INTO livros(nome, autor, avaliacao) values('{nome}', '{autor}', {avaliacao});"
+    sql = f"INSERT INTO books(title, author, review_points) values('{nome}', '{autor}', {avaliacao});"
 
     cursor.execute(sql)
     conn.commit()

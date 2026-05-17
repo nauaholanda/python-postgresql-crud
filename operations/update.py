@@ -7,9 +7,9 @@ def update_book():
   try:
     id = int(input('\nDigite o id do livro que deseja editar: '))
 
-    conn = psycopg2.connect("dbname=teste_python user=postgres password=password")
+    conn = psycopg2.connect("dbname=library user=postgres password=password")
     cursor = conn.cursor()
-    cursor.execute(f'SELECT id, nome, autor, avaliacao FROM livros WHERE id = {id}')
+    cursor.execute(f'SELECT id, title, author, review_points FROM livros WHERE id = {id}')
 
     book = cursor.fetchone()
 
@@ -23,7 +23,7 @@ def update_book():
     if not avaliacao_input: avaliacao = book[3]
     else: avaliacao = float(avaliacao_input)
 
-    cursor.execute(f"UPDATE livros SET nome='{nome}', autor='{autor}', avaliacao='{avaliacao}' WHERE id = {id};")
+    cursor.execute(f"UPDATE books SET title='{nome}', author='{autor}', review_points='{avaliacao}' WHERE id = {id};")
     conn.commit()
 
     print('Livro editado com sucesso!')

@@ -1,10 +1,10 @@
 import psycopg2
 
 def fetch_books():
-  conn = psycopg2.connect("dbname=teste_python user=postgres password=password")
+  conn = psycopg2.connect("dbname=library user=postgres password=password")
   cursor = conn.cursor()
 
-  cursor.execute('SELECT id, nome, autor, avaliacao FROM livros ORDER BY id')
+  cursor.execute('SELECT id, title, author, review_points FROM books ORDER BY id')
 
   print(f'Temos {cursor.rowcount} livros cadastrados na nossa base:')
 
