@@ -9,5 +9,5 @@ class Book(Base):
   id: Mapped[int] = mapped_column(primary_key=True)
   title: Mapped[str] = mapped_column(nullable=False)
   author: Mapped[str] = mapped_column(nullable=False)
-  review_points: Mapped[Optional[float]] = mapped_column(Float(precision=1, max=10))
+  review_points: Mapped[Optional[float]] = mapped_column(Float(precision=1))
   
