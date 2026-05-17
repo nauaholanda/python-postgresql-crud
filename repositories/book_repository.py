@@ -21,3 +21,8 @@ class BookRepository:
     with DBConnection() as db:
       db.session.query(Book).filter(Book.id == id).delete()
       db.session.commit()
+
+  def update(self, book: Book):
+    with DBConnection() as db:
+      db.session.query(Book).filter(Book.id == book.id).update(vars(book))
+      db.session.commit()
