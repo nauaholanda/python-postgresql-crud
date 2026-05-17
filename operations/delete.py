@@ -1,27 +1,20 @@
-import psycopg2
+from repositories import BookRepository
 from operations.fetch import fetch_books
 
 def delete_book():
   fetch_books()
 
   try:
-    id = int(input('\nDigite o id do livro que deseja excluir: '))
+    id = int(input('\nEnter the ID of the book you want to delete: '))
 
-    conn = psycopg2.connect("dbname=library user=postgres password=password")
-    cursor = conn.cursor()
-    cursor.execute(f'SELECT id, title, author, review_points FROM books WHERE id = {id}')
+    book_repository = BookRepository()
+    book = book_repository.find_by_id(id)
 
-    book = cursor.fetchone()
+    confirmation = input(f'Confirm deletion of the book "{book.title}" by {book.author} (ID {book.id})? (y/n) ')
 
-    confirmation = input(f'Confirmar a exclusão do livro {book[1]} de {book[2]} (id {book[0]})? (s/n) ')
-
-    if confirmation == 's':
-      cursor.execute(f"DELETE FROM books WHERE id = {id};")
-      conn.commit()
-      print('Livro excluído com sucesso!')
-
-    cursor.close()
-    conn.close()
+    if confirmation.lower() == 'y':
+      book_repository.delete(id)
+      print('Book deleted successfully!')
 
   except Exception as err:
-    print(f'Erro ao excluir livro: {err}. Voltando ao Menu...')
+    print(f'Error deleting book: {err}. Returning to Menu...')
