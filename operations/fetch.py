@@ -1,17 +1,11 @@
-import psycopg2
+from repositories import BookRepository
 
 def fetch_books():
-  conn = psycopg2.connect("dbname=library user=postgres password=password")
-  cursor = conn.cursor()
+  book_repository = BookRepository()
 
-  cursor.execute('SELECT id, title, author, review_points FROM books ORDER BY id')
+  books = book_repository.select()
 
-  print(f'Temos {cursor.rowcount} livros cadastrados na nossa base:')
-
-  books = cursor.fetchall()
+  print(f'We have {len(books)} books registered in our database:')
 
   for book in books:
-    print(f'{book[0]} - {book[1]} de {book[2]} - Nota: {book[3]}/10.0')
-
-  cursor.close()
-  conn.close()
+    print(f'{book.id} - {book.title} by {book.author} - Rating: {book.rating}/10.0')
