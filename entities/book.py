@@ -1,7 +1,10 @@
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy import Float
 from entities import Base
+
+if TYPE_CHECKING:
+  from entities import Review
 
 class Book(Base):
   __tablename__ = 'books'
