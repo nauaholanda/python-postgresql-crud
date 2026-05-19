@@ -1,6 +1,6 @@
 from repositories import BookRepository
 from entities import Book
-from operations import fetch_books
+from operations.books import fetch_books
 
 def update_book():
   fetch_books()

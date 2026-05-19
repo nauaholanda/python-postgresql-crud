@@ -1,4 +1,4 @@
-from operations import fetch_books, insert_book, update_book, delete_book
+from operations.books import fetch_books, insert_book, update_book, delete_book
 
 def main():
     print("Welcome to the book registry!")
