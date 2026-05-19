@@ -9,3 +9,5 @@ class Review(Base):
   book_id: Mapped[int] = mapped_column(ForeignKey('books.id', ondelete='CASCADE'))
   review_text: Mapped[str] = mapped_column(nullable=False)
   reviewer_name: Mapped[str] = mapped_column(nullable=False)
+
+  book: Mapped["Book"] = relationship(back_populates='reviews')

@@ -1,5 +1,5 @@
-from typing import Optional
-from sqlalchemy.orm import mapped_column, Mapped
+from typing import Optional, List
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy import Float
 from entities import Base
 
@@ -10,4 +10,6 @@ class Book(Base):
   title: Mapped[str] = mapped_column(nullable=False)
   author: Mapped[str] = mapped_column(nullable=False)
   rating: Mapped[Optional[float]] = mapped_column(Float(precision=1))
+
+  reviews: Mapped[List["Review"]] = relationship(back_populates='book')
   
