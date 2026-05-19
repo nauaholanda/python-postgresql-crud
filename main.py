@@ -9,7 +9,7 @@ def main():
         print("2 - Register a new book")
         print("3 - Edit an existing book")
         print("4 - Delete a book")
-        print("5 - List a book's reviews")
+        print("5 - List the reviews of a book")
         print("(type 999 or press Ctrl+C to exit)")
         try:
             action_number = int(input("What would you like to do? (enter the action number): "))
