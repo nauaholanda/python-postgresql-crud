@@ -1,5 +1,5 @@
 from repositories import BookRepository
-from operations.books import fetch_books
+from .fetch import fetch_books
 
 def delete_book():
   fetch_books()
