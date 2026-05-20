@@ -32,9 +32,13 @@ class BookRepository:
 
   def update(self, book: Book):
     with DBConnection() as db:
-      db.session.query(Book).filter(Book.id == book.id).update({
-        'title': book.title,
-        'author': book.author,
-        'rating': book.rating
-      })
-      db.session.commit()
+      try:
+        db.session.query(Book).filter(Book.id == book.id).update({
+          'title': book.title,
+          'author': book.author,
+          'rating': book.rating
+        })
+        db.session.commit()
+      except Exception as exception:
+        db.session.rollback()
+        raise exception
