@@ -10,8 +10,12 @@ class BookRepository:
     
   def insert(self, book):
     with DBConnection() as db:
-      db.session.add(book)
-      db.session.commit()
+      try:
+        db.session.add(book)
+        db.session.commit()
+      except Exception as exception:
+        db.session.rollback()
+        raise exception
 
   def find_by_id(self, id):
     with DBConnection() as db:
