@@ -23,8 +23,12 @@ class BookRepository:
     
   def delete(self, id):
     with DBConnection() as db:
-      db.session.query(Book).filter(Book.id == id).delete()
-      db.session.commit()
+      try:
+        db.session.query(Book).filter(Book.id == id).delete()
+        db.session.commit()
+      except Exception as exception:
+        db.session.rollback()
+        raise exception
 
   def update(self, book: Book):
     with DBConnection() as db:
