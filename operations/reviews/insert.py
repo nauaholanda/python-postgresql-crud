@@ -11,7 +11,7 @@ def insert_review():
     reviewer_name = input('Enter the reviewer name: ')
     if not reviewer_name: raise ValueError('The reviewer name is required!')
     review_text = input('Enter the review text: ')
-    if not review_text: raise ValueError('The reviewer text is required!')
+    if not review_text: raise ValueError('The review text is required!')
 
     review = Review(reviewer_name=reviewer_name, review_text=review_text, book_id=book_id)
 
