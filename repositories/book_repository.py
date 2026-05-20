@@ -1,5 +1,6 @@
 from configs import DBConnection
 from entities import Book
+from sqlalchemy.orm.exc import NoResultFound
 
 class BookRepository:
   def select(self):
@@ -14,8 +15,11 @@ class BookRepository:
 
   def find_by_id(self, id):
     with DBConnection() as db:
-      book = db.session.query(Book).filter(Book.id == id).one()
-      return book
+      try:
+        book = db.session.query(Book).filter(Book.id == id).one()
+        return book
+      except NoResultFound:
+        return None
     
   def delete(self, id):
     with DBConnection() as db:
