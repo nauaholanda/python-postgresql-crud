@@ -11,6 +11,7 @@ def update_book():
     book_repository = BookRepository()
 
     book = book_repository.find_by_id(id)
+    if not book: raise ValueError('Invalid ID entered')
 
     title = input(f"Enter a new title for this book ({book.title}): ")
     if not title: title = book.title
