@@ -4,6 +4,7 @@ from entities import Book
 def insert_book():
   try:
     title = input("Enter the title of the new book: ")
+    if not title: raise ValueError('The book title is required!')
     author = input("Enter the author of this book: ")
     rating = float(input("Enter the rating for this book: "))
 
