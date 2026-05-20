@@ -10,6 +10,8 @@ def delete_book():
     book_repository = BookRepository()
     book = book_repository.find_by_id(id)
 
+    if not book: raise ValueError('Invalid ID entered')
+
     confirmation = input(f'Confirm deletion of the book "{book.title}" by {book.author} (ID {book.id})? (y/n) ')
 
     if confirmation.lower() == 'y':
