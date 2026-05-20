@@ -9,6 +9,10 @@ class ReviewRepository:
   
   def insert(self, review):
     with DBConnection() as db:
-      db.session.add(review)
-      db.session.commit()
+      try:
+        db.session.add(review)
+        db.session.commit()
+      except Exception as exception:
+        db.session.rollback()
+        raise exception
       
