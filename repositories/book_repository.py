@@ -14,7 +14,7 @@ class BookRepository:
 
   def find_by_id(self, id):
     with DBConnection() as db:
-      book = db.session.query(Book).filter(Book.id == id).first()
+      book = db.session.query(Book).filter(Book.id == id).one()
       return book
     
   def delete(self, id):
