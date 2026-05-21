@@ -9,6 +9,12 @@ def repository() -> ReviewRepository:
   return ReviewRepository()
 
 @pytest.fixture
+def mock_review():
+  review = MagicMock(spec=Review)
+  review.book_id = 1
+  return review
+
+@pytest.fixture
 def mock_db_session():
   mock_db = MagicMock()
   mock_session = MagicMock()
