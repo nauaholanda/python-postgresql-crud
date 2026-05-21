@@ -56,6 +56,7 @@ class TestInsert:
 
     mock_session.add.assert_called_once_with(mock_review)
     mock_session.commit.assert_called_once()
+    mock_session.rollback.assert_not_called()
   
   def test_rollback_when_raise_exception(self, repository: ReviewRepository, mock_review, mock_db_session):
     mock_db, mock_session = mock_db_session
