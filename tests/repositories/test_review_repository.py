@@ -56,3 +56,15 @@ class TestInsert:
 
     mock_session.add.assert_called_once_with(mock_review)
     mock_session.commit.assert_called_once()
+  
+  def test_rollback_when_raise_exception(self, repository: ReviewRepository, mock_review, mock_db_session):
+    mock_db, mock_session = mock_db_session
+    mock_session.commit.side_effect = Exception("Error")
+
+    with patch("src.repositories.review_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      with pytest.raises(Exception, match="Error"):
+        repository.insert(mock_review)
+
+    mock_session.rollback.assert_called_once()
