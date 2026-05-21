@@ -44,3 +44,15 @@ class TestFindAllByBookId:
       response = repository.find_all_by_book_id(1)
 
     assert response == []
+
+class TestInsert:
+  def test_successfully_insert_review(self, repository: ReviewRepository, mock_review, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    with patch("src.repositories.review_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      repository.insert(mock_review)
+
+    mock_session.add.assert_called_once_with(mock_review)
+    mock_session.commit.assert_called_once()
