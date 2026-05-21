@@ -1,5 +1,5 @@
-from configs import DBConnection
-from entities import Review
+from src.configs import DBConnection
+from src.entities import Review
 
 class ReviewRepository:
   def find_all_by_book_id(self, book_id):

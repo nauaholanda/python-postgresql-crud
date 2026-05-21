@@ -1,5 +1,5 @@
-from repositories import BookRepository
-from entities import Book
+from src.repositories import BookRepository
+from src.entities import Book
 
 def insert_book():
   try:

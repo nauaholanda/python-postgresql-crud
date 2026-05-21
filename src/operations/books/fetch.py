@@ -1,4 +1,4 @@
-from repositories import BookRepository
+from src.repositories import BookRepository
 
 def fetch_books():
   book_repository = BookRepository()

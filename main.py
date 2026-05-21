@@ -1,5 +1,5 @@
-from operations.books import fetch_books, insert_book, update_book, delete_book
-from operations.reviews import list_reviews, insert_review
+from src.operations.books import fetch_books, insert_book, update_book, delete_book
+from src.operations.reviews import list_reviews, insert_review
 
 def main():
     print("Welcome to the book registry!")

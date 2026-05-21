@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
-from entities import Base
+from src.entities import Base
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy import ForeignKey
 
 if TYPE_CHECKING:
-  from entities import Book
+  from src.entities import Book
 
 class Review(Base):
   __tablename__ = 'reviews'

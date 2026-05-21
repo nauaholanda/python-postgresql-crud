@@ -1,5 +1,5 @@
-from repositories import BookRepository
-from entities import Book
+from src.repositories import BookRepository
+from src.entities import Book
 from .fetch import fetch_books
 
 def update_book():

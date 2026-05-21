@@ -1,4 +1,4 @@
-from repositories import BookRepository
+from src.repositories import BookRepository
 from .fetch import fetch_books
 
 def delete_book():

@@ -1,5 +1,5 @@
-from operations.books import fetch_books
-from repositories import ReviewRepository
+from src.operations.books import fetch_books
+from src.repositories import ReviewRepository
 
 def list_reviews():
   fetch_books()

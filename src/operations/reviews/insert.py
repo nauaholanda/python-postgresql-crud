@@ -1,6 +1,6 @@
-from operations.books import fetch_books
-from entities import Review
-from repositories import ReviewRepository
+from src.operations.books import fetch_books
+from src.entities import Review
+from src.repositories import ReviewRepository
 
 def insert_review():
   fetch_books()
