@@ -1,5 +1,5 @@
-from src.configs import DBConnection
-from src.entities import Book
+from configs import DBConnection
+from entities import Book
 from sqlalchemy.orm.exc import NoResultFound
 
 class BookRepository:
