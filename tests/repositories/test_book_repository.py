@@ -61,3 +61,17 @@ class TestInsertBook:
     mock_session.add.assert_called_with(mock_book)
     mock_session.commit.assert_not_called()
     mock_session.rollback.assert_called_once()
+  
+class TestFindBookById:
+  def test_find_book_successfully(self, book_repository: BookRepository, mock_book, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    expected = mock_book
+    mock_session.query.return_value.filter.return_value.one.return_value = expected
+
+    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      response = book_repository.find_by_id(1)
+    
+    assert response == expected
