@@ -20,3 +20,10 @@ def update_book(book_id: int, book_data: BookUpdate):
     return book_service.update(book_id, book_data)
   except BookNotFoundException as error:
     raise HTTPException(status_code=404, detail=str(error))
+  
+@router.delete("/{book_id}", status_code=202)
+def delete_book(book_id: int):
+  try:
+    return book_service.delete(book_id)
+  except BookNotFoundException as error:
+    raise HTTPException(status_code=404, detail=str(error))
