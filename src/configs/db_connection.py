@@ -8,7 +8,7 @@ class DBConnection:
     self.session = None
 
   def __enter__(self):
-    session_maker = sessionmaker(bind=self.__engine)
+    session_maker = sessionmaker(bind=self.__engine, expire_on_commit=False)
     self.session = session_maker()
     return self
   
