@@ -19,3 +19,7 @@ def update(book_id: int, book_data: BookUpdate) -> BookResponse:
   update_data = book_data.model_dump(exclude_unset=True)
   book = book_repository.update(book_id, update_data)
   return BookResponse.model_validate(book)
+
+def delete(book_id: int) -> None:
+  book_repository = BookRepository()
+  book_repository.delete(book_id)
