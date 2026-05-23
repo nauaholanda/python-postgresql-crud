@@ -7,3 +7,8 @@ class BookResponse(BaseModel):
   title: str
   author: str
   rating: float
+
+class BookCreate(BaseModel):
+  title: str
+  author: str
+  rating: float
