@@ -9,6 +9,12 @@ def book_repository():
   return BookRepository()
 
 @pytest.fixture
+def mock_book():
+  book = MagicMock(spec=Book)
+  book.title = 'Test Book'
+  return book
+
+@pytest.fixture
 def mock_db_session():
   mock_db = MagicMock()
   mock_session = MagicMock()
@@ -28,3 +34,15 @@ class TestSelectBooks:
       response = book_repository.select()
 
     assert response == expected
+
+class TestInsertBook:
+  def test_insert_book_successfully(self, book_repository: BookRepository, mock_book, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      book_repository.insert(mock_book)
+
+    mock_session.add.assert_called_once_with(mock_book)
+    mock_session.commit.assert_called_once()
