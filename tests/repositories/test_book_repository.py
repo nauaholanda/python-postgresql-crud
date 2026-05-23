@@ -1,3 +1,4 @@
+from sqlalchemy.orm.exc import NoResultFound
 from unittest.mock import MagicMock, patch
 import pytest
 
@@ -75,3 +76,15 @@ class TestFindBookById:
       response = book_repository.find_by_id(1)
     
     assert response == expected
+
+  def test_return_none_when_no_result_found(self, book_repository: BookRepository, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    mock_session.query.return_value.filter.return_value.one.side_effect = NoResultFound("")
+
+    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      response = book_repository.find_by_id(1)
+    
+    assert response is None
