@@ -26,10 +26,14 @@ class BookRepository:
       except NoResultFound:
         return None
     
-  def delete(self, id):
+  def delete(self, book_id):
     with DBConnection() as db:
       try:
-        db.session.query(Book).filter(Book.id == id).delete()
+        rows_deleted = db.session.query(Book).filter(Book.id == book_id).delete()
+
+        if rows_deleted == 0:
+          raise BookNotFoundException(f"Book with ID {book_id} not found.")
+        
         db.session.commit()
       except Exception as exception:
         db.session.rollback()
