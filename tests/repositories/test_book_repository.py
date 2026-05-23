@@ -115,3 +115,15 @@ class TestDeleteBook:
     mock_session.query.return_value.filter.return_value.delete.assert_called_once()
     mock_session.commit.assert_not_called()
     mock_session.rollback.assert_called_once()
+
+class TestUpdateBook:
+  def test_update_book_successfully(self, book_repository: BookRepository, mock_book, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      book_repository.update(mock_book)
+
+    mock_session.query.return_value.filter.return_value.update.assert_called_once()
+    mock_session.commit.assert_called_once()
