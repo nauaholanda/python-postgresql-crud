@@ -21,7 +21,7 @@ def mock_db_session():
   mock_db.session = mock_session
   return mock_db, mock_session
 
-class TestFindAllByBookId:
+class TestFindAllReviewsByBookId:
   def test_returns_book_reviews(self, repository: ReviewRepository, mock_db_session):
     mock_db, mock_session = mock_db_session
     expected_response = [MagicMock(spec=Review), MagicMock(spec=Review)]
@@ -45,7 +45,7 @@ class TestFindAllByBookId:
 
     assert response == []
 
-class TestInsert:
+class TestInsertReview:
   def test_successfully_insert_review(self, repository: ReviewRepository, mock_review, mock_db_session):
     mock_db, mock_session = mock_db_session
 
