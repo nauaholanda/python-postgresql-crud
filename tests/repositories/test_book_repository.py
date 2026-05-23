@@ -100,3 +100,18 @@ class TestDeleteBook:
 
     mock_session.query.return_value.filter.return_value.delete.assert_called_once()
     mock_session.commit.assert_called_once()
+
+  def test_rollback_when_raise_exception(self, book_repository: BookRepository, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    mock_session.query.return_value.filter.return_value.delete.side_effect = Exception("Error")
+
+    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      with pytest.raises(Exception, match="Error"):
+        book_repository.delete(1)
+
+    mock_session.query.return_value.filter.return_value.delete.assert_called_once()
+    mock_session.commit.assert_not_called()
+    mock_session.rollback.assert_called_once()
