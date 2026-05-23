@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, ConfigDict
 
 class BookResponse(BaseModel):
@@ -12,3 +14,8 @@ class BookCreate(BaseModel):
   title: str
   author: str
   rating: float
+
+class BookUpdate(BaseModel):
+  title: Optional[str] = None
+  author: Optional[str] = None
+  rating: Optional[float] = None
