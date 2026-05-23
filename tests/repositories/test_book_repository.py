@@ -88,3 +88,15 @@ class TestFindBookById:
       response = book_repository.find_by_id(1)
     
     assert response is None
+
+class TestDeleteBook:
+  def test_delete_book_successfully(self, book_repository: BookRepository, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      book_repository.delete(1)
+
+    mock_session.query.return_value.filter.return_value.delete.assert_called_once()
+    mock_session.commit.assert_called_once()
