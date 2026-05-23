@@ -5,6 +5,7 @@ description = "A CRUD of books with python and postgresql (via psycopg2)"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "alembic>=1.18.4",
     "psycopg2-binary>=2.9.12",
     "pytest>=9.0.3",
     "sqlalchemy>=2.0.49",
