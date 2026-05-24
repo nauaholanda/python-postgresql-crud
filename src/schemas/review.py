@@ -7,3 +7,7 @@ class ReviewResponse(BaseModel):
   review_text: str
   reviewer_name: str
   book_id: int
+
+class ReviewCreate(BaseModel):
+  review_text: str
+  reviewer_name: str
