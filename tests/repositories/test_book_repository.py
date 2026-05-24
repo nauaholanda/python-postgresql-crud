@@ -2,8 +2,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from unittest.mock import MagicMock, patch
 import pytest
 
-from src.repositories.book_repository import BookRepository
-from src.entities.book import Book
+from repositories.book_repository import BookRepository
+from entities.book import Book
 
 @pytest.fixture
 def book_repository():
@@ -29,7 +29,7 @@ class TestSelectBooks:
 
     mock_session.query.return_value.all.return_value = expected
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       response = book_repository.select()
@@ -40,7 +40,7 @@ class TestInsertBook:
   def test_insert_book_successfully(self, book_repository: BookRepository, mock_book, mock_db_session):
     mock_db, mock_session = mock_db_session
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       book_repository.insert(mock_book)
@@ -53,7 +53,7 @@ class TestInsertBook:
 
     mock_session.add.side_effect = Exception("Error")
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       with pytest.raises(Exception, match="Error"):
@@ -70,7 +70,7 @@ class TestFindBookById:
     expected = mock_book
     mock_session.query.return_value.filter.return_value.one.return_value = expected
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       response = book_repository.find_by_id(1)
@@ -82,7 +82,7 @@ class TestFindBookById:
 
     mock_session.query.return_value.filter.return_value.one.side_effect = NoResultFound("")
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       response = book_repository.find_by_id(1)
@@ -93,7 +93,7 @@ class TestDeleteBook:
   def test_delete_book_successfully(self, book_repository: BookRepository, mock_db_session):
     mock_db, mock_session = mock_db_session
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       book_repository.delete(1)
@@ -106,7 +106,7 @@ class TestDeleteBook:
 
     mock_session.query.return_value.filter.return_value.delete.side_effect = Exception("Error")
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       with pytest.raises(Exception, match="Error"):
@@ -120,7 +120,7 @@ class TestUpdateBook:
   def test_update_book_successfully(self, book_repository: BookRepository, mock_book, mock_db_session):
     mock_db, mock_session = mock_db_session
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       book_repository.update(mock_book)
@@ -133,7 +133,7 @@ class TestUpdateBook:
 
     mock_session.query.return_value.filter.return_value.update.side_effect = Exception("Error")
 
-    with patch("src.repositories.book_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       with pytest.raises(Exception, match="Error"):

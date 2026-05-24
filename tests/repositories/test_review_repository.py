@@ -1,8 +1,8 @@
 from unittest.mock import MagicMock, patch
 import pytest
 
-from src.repositories.review_repository import ReviewRepository
-from src.entities.review import Review
+from repositories.review_repository import ReviewRepository
+from entities.review import Review
 
 @pytest.fixture
 def repository() -> ReviewRepository:
@@ -28,7 +28,7 @@ class TestFindAllReviewsByBookId:
 
     mock_session.query.return_value.filter.return_value.all.return_value = expected_response
 
-    with patch("src.repositories.review_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.review_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
       response = repository.find_all_by_book_id(1)
 
@@ -39,7 +39,7 @@ class TestFindAllReviewsByBookId:
 
     mock_session.query.return_value.filter.return_value.all.return_value = []
 
-    with patch("src.repositories.review_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.review_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
       response = repository.find_all_by_book_id(1)
 
@@ -49,7 +49,7 @@ class TestInsertReview:
   def test_successfully_insert_review(self, repository: ReviewRepository, mock_review, mock_db_session):
     mock_db, mock_session = mock_db_session
 
-    with patch("src.repositories.review_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.review_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       repository.insert(mock_review)
@@ -62,7 +62,7 @@ class TestInsertReview:
     mock_db, mock_session = mock_db_session
     mock_session.commit.side_effect = Exception("Error")
 
-    with patch("src.repositories.review_repository.DBConnection") as MockDBConnection:
+    with patch("repositories.review_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       with pytest.raises(Exception, match="Error"):
