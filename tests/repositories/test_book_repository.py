@@ -92,14 +92,17 @@ class TestFindBookById:
     assert response is None
 
 class TestDeleteBook:
-  def test_delete_book_successfully(self, book_repository: BookRepository, mock_db_session):
+  def test_delete_book_successfully(self, book_repository: BookRepository, mock_book, mock_db_session):
     mock_db, mock_session = mock_db_session
+
+    mock_session.query.return_value.filter.return_value.first.return_value = mock_book
 
     with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
-      book_repository.delete(1)
+      response = book_repository.delete(1)
 
+    assert response == mock_book
     mock_session.query.return_value.filter.return_value.delete.assert_called_once()
     mock_session.commit.assert_called_once()
 
