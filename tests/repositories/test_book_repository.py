@@ -139,12 +139,14 @@ class TestUpdateBook:
     mock_db, mock_session = mock_db_session
 
     mock_session.query.return_value.filter.return_value.update.return_value = 1
+    mock_session.query.return_value.filter.return_value.first.return_value = mock_book
 
     with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
-      book_repository.update(mock_book.id, mock_book)
+      response = book_repository.update(mock_book.id, mock_book)
 
+    assert response == mock_book
     mock_session.query.return_value.filter.return_value.update.assert_called_once()
     mock_session.commit.assert_called_once()
 
