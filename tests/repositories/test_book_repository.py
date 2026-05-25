@@ -12,6 +12,7 @@ def book_repository():
 @pytest.fixture
 def mock_book():
   book = MagicMock(spec=Book)
+  book.id = 1
   book.title = 'Test Book'
   return book
 
@@ -120,10 +121,12 @@ class TestUpdateBook:
   def test_update_book_successfully(self, book_repository: BookRepository, mock_book, mock_db_session):
     mock_db, mock_session = mock_db_session
 
+    mock_session.query.return_value.filter.return_value.update.return_value = 1
+
     with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
-      book_repository.update(mock_book)
+      book_repository.update(mock_book.id, mock_book)
 
     mock_session.query.return_value.filter.return_value.update.assert_called_once()
     mock_session.commit.assert_called_once()
@@ -137,7 +140,7 @@ class TestUpdateBook:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
       with pytest.raises(Exception, match="Error"):
-        book_repository.update(mock_book)
+        book_repository.update(mock_book.id, mock_book)
 
     mock_session.query.return_value.filter.return_value.update.assert_called_once()
     mock_session.commit.assert_not_called()
