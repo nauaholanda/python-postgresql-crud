@@ -4,6 +4,7 @@ import pytest
 
 from repositories.book_repository import BookRepository
 from entities.book import Book
+from exceptions import BookNotFoundException
 
 @pytest.fixture
 def book_repository():
@@ -130,6 +131,22 @@ class TestUpdateBook:
 
     mock_session.query.return_value.filter.return_value.update.assert_called_once()
     mock_session.commit.assert_called_once()
+
+  def test_rollback_and_raise_exception_when_book_not_found(self, book_repository: BookRepository, mock_book, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    exception_message = f"Book with ID {mock_book.id} not found."
+    mock_session.query.return_value.filter.return_value.update.return_value = 0
+
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      with pytest.raises(BookNotFoundException, match=exception_message):
+        book_repository.update(mock_book.id, mock_book)
+
+    mock_session.query.return_value.filter.return_value.update.assert_called_once()
+    mock_session.commit.assert_not_called()
+    mock_session.rollback.assert_called_once()
 
   def test_rollback_when_raise_exception(self, book_repository: BookRepository, mock_book, mock_db_session):
     mock_db, mock_session = mock_db_session
