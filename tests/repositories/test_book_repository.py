@@ -103,6 +103,22 @@ class TestDeleteBook:
     mock_session.query.return_value.filter.return_value.delete.assert_called_once()
     mock_session.commit.assert_called_once()
 
+  def test_rollback_and_raise_exception_when_book_not_found(self, book_repository: BookRepository, mock_db_session):
+    mock_db, mock_session = mock_db_session
+
+    exception_message = f"Book with ID {1} not found."
+    mock_session.query.return_value.filter.return_value.delete.return_value = 0
+
+    with patch("repositories.book_repository.DBConnection") as MockDBConnection:
+      MockDBConnection.return_value.__enter__.return_value = mock_db
+
+      with pytest.raises(BookNotFoundException, match=exception_message):
+        book_repository.delete(1)
+
+    mock_session.query.return_value.filter.return_value.delete.assert_called_once()
+    mock_session.commit.assert_not_called()
+    mock_session.rollback.assert_called_once()
+
   def test_rollback_when_raise_exception(self, book_repository: BookRepository, mock_db_session):
     mock_db, mock_session = mock_db_session
 
