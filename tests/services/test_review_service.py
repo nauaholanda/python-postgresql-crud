@@ -4,6 +4,7 @@ import pytest
 from exceptions import BookNotFoundException
 from services import review_service
 from entities import Book, Review
+from schemas.review import ReviewCreate
 
 @pytest.fixture
 def mock_book():
@@ -23,7 +24,6 @@ def mock_review_repository():
   with patch("services.review_service.ReviewRepository") as MockReviewRepository:
     MockReviewRepository.return_value = review_repository
     yield review_repository
-
 
 class TestGetAllReviewsByBookId:
   def test_get_all_reviews_successfully(self, mock_book, mock_book_repository, mock_review_repository):
@@ -51,3 +51,16 @@ class TestGetAllReviewsByBookId:
       review_service.get_all_by_book_id(book_id)
 
     mock_review_repository.find_all_by_book_id.assert_not_called()
+
+class TestCreateReview:
+  def test_create_review_successfully(self):
+    book_id = 1
+    review_data = MagicMock(spec=ReviewCreate)
+    review_data.model_dump.return_value = { "review_text": "Review", "reviewer_name": "Reviewer" }
+    parsed_review = MagicMock()
+
+    with patch("services.review_service.ReviewResponse") as MockReviewResponse:
+      MockReviewResponse.model_validate.return_value = parsed_review
+      response = review_service.create(book_id, review_data)
+
+    assert response == parsed_review
