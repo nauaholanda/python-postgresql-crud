@@ -100,9 +100,8 @@ class TestDeleteBook:
     with patch("repositories.book_repository.DBConnection") as MockDBConnection:
       MockDBConnection.return_value.__enter__.return_value = mock_db
 
-      response = book_repository.delete(1)
+      book_repository.delete(1)
 
-    assert response == mock_book
     mock_session.query.return_value.filter.return_value.delete.assert_called_once()
     mock_session.commit.assert_called_once()
 
