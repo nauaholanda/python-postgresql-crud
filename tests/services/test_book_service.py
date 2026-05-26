@@ -62,3 +62,11 @@ class TestUpdateBook:
     assert response == parsed_book
     mock_book_repository.update.assert_called_once_with(book_id, book_data.model_dump(exclude_unset=True))
     MockBookResponse.model_validate.assert_called_once_with(updated_book)
+
+class TestDeleteBook:
+  def test_delete_book_successfully(self, mock_book_repository):
+    book_id = 1
+
+    book_service.delete(book_id)
+
+    mock_book_repository.delete.assert_called_once_with(book_id)
