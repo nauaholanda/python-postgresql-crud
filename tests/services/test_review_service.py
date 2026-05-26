@@ -64,3 +64,13 @@ class TestCreateReview:
       response = review_service.create(book_id, review_data)
 
     assert response == parsed_review
+  
+  def test_raises_exception_when_book_not_found(self, mock_book_repository, mock_review_repository):
+    book_id = 1
+    review_data = MagicMock(spec=ReviewCreate)
+    mock_book_repository.find_by_id.return_value = None
+
+    with pytest.raises(BookNotFoundException):
+      review_service.create(book_id, review_data)
+
+    mock_review_repository.find_all_by_book_id.assert_not_called()
