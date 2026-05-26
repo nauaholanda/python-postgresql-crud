@@ -3,7 +3,7 @@ import pytest
 
 from entities import Book
 from services import book_service
-from schemas.book import BookCreate
+from schemas.book import BookCreate, BookUpdate
 
 @pytest.fixture
 def mock_book_repository():
@@ -44,3 +44,21 @@ class TestCreateBook:
     MockBook.assert_called_once_with(**book_data.model_dump())
     mock_book_repository.insert.assert_called_once_with(MockBook.return_value)
     MockBookResponse.model_validate.assert_called_once_with(MockBook.return_value)
+
+class TestUpdateBook:
+  def test_update_book_successfully(self, mock_book_repository):
+    book_id = 1
+    book_data = BookUpdate(title="New title")  # ajuste os campos conforme seu schema
+    parsed_book = MagicMock()
+    updated_book = MagicMock(spec=Book)
+
+    mock_book_repository.update.return_value = updated_book
+
+    with patch("services.book_service.BookResponse") as MockBookResponse:
+      MockBookResponse.model_validate.return_value = parsed_book
+
+      response = book_service.update(book_id, book_data)
+
+    assert response == parsed_book
+    mock_book_repository.update.assert_called_once_with(book_id, book_data.model_dump(exclude_unset=True))
+    MockBookResponse.model_validate.assert_called_once_with(updated_book)
