@@ -1,6 +1,7 @@
 from unittest.mock import patch, MagicMock, call
 import pytest
 
+from exceptions import BookNotFoundException
 from services import review_service
 from entities import Book, Review
 
@@ -41,3 +42,12 @@ class TestGetAllReviewsByBookId:
     assert response == parsed_reviews
     mock_review_repository.find_all_by_book_id.assert_called_once_with(book_id)
     MockReviewResponse.model_validate.assert_has_calls([call(r) for r in db_reviews])
+
+  def test_raises_exception_when_book_not_found(self, mock_book_repository, mock_review_repository):
+    book_id = 1
+    mock_book_repository.find_by_id.return_value = None
+
+    with pytest.raises(BookNotFoundException):
+      review_service.get_all_by_book_id(book_id)
+
+    mock_review_repository.find_all_by_book_id.assert_not_called()
